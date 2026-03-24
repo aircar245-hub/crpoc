@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frontend Hub - 前端学习交流社区</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <title>Moder的个人学习空间</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --bg-card: #1e293b;
-            --accent-primary: #8b5cf6;
-            --accent-secondary: #06b6d4;
-            --text-primary: #f1f5f9;
-            --text-muted: #94a3b8;
+            --cyber-purple: #8b5cf6;
+            --cyber-pink: #ec4899;
+            --cyber-blue: #06b6d4;
+            --bg-dark: #0a0a0f;
+            --bg-card: rgba(20, 20, 30, 0.8);
+            --text-glow: rgba(139, 92, 246, 0.8);
         }
 
         * {
@@ -23,11 +23,22 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Noto Sans SC', sans-serif;
             background-color: var(--bg-dark);
-            color: var(--text-primary);
-            line-height: 1.6;
+            color: #fff;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 粒子背景 Canvas */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* 导航栏 */
@@ -37,189 +48,98 @@
             width: 100%;
             padding: 1.5rem 5%;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(10, 10, 15, 0.95);
             backdrop-filter: blur(10px);
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.3);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, var(--cyber-purple), var(--cyber-pink), var(--cyber-blue), var(--cyber-purple));
+            background-size: 300% 100%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite, flicker 2s infinite alternate;
+            text-shadow: 0 0 10px var(--text-glow);
         }
 
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
+        @keyframes shine {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
         }
 
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
+        @keyframes flicker {
+            0%, 100% { opacity: 1; filter: drop-shadow(0 0 5px var(--cyber-purple)); }
+            50% { opacity: 0.9; filter: drop-shadow(0 0 15px var(--cyber-pink)); }
         }
 
-        .nav-links a:hover {
-            color: var(--text-primary);
+        /* 主内容区 */
+        .main-content {
+            padding-top: 120px;
+            position: relative;
+            z-index: 1;
         }
 
-        .cta-btn {
-            padding: 0.7rem 1.5rem;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .cta-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
-        }
-
-        /* 英雄区 */
+        /* 第一区域 */
         .hero {
-            min-height: 100vh;
+            min-height: 40vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 0 1rem;
-            position: relative;
-            padding-top: 80px;
+            padding: 2rem;
         }
 
         .hero h1 {
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, #fff 0%, var(--accent-primary) 50%, var(--accent-secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 200% auto;
-            animation: shine 3s linear infinite;
-        }
-
-        @keyframes shine {
-            to { background-position: 200% center; }
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            max-width: 600px;
-            margin-bottom: 2rem;
-        }
-
-        .hero-btns {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btn-secondary {
-            padding: 0.9rem 2rem;
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50px;
-            color: var(--text-primary);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--accent-secondary);
-        }
-
-        /* 浮动背景装饰 */
-        .floating-shapes {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .shape {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.4;
-            animation: float 10s infinite ease-in-out;
-        }
-
-        .shape-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--accent-primary);
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .shape-2 {
-            width: 300px;
-            height: 300px;
-            background: var(--accent-secondary);
-            bottom: 10%;
-            right: 15%;
-            animation-delay: 2s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-30px) rotate(5deg); }
-        }
-
-        /* 内容区域通用 */
-        section {
-            padding: 6rem 5%;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-header h2 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
+            color: var(--cyber-purple);
+            text-shadow: 0 0 10px var(--text-glow);
         }
 
-        .section-header p {
-            color: var(--text-muted);
+        .typewriter {
+            font-size: 1.2rem;
+            color: var(--cyber-blue);
+            border-right: 2px solid var(--cyber-blue);
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            animation: blink 0.7s step-end infinite;
         }
 
-        /* 学习资源卡片 */
-        .resources-grid {
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        /* 学习卡片区 - 田字格 */
+        .cards-section {
+            padding: 2rem 5%;
+        }
+
+        .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
         }
 
         .card {
             background: var(--bg-card);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 15px;
             padding: 2rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: transform 0.3s, border-color 0.3s;
+            text-align: center;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
             position: relative;
             overflow: hidden;
         }
@@ -228,73 +148,89 @@
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
+            left: -100%;
             width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(139, 92, 246, 0.3);
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+            transition: left 0.5s;
         }
 
         .card:hover::before {
-            transform: scaleX(1);
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyber-pink);
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
         }
 
         .card-icon {
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            background: linear-gradient(135deg, var(--cyber-purple), var(--cyber-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .card h3 {
             margin-bottom: 0.5rem;
+            color: #fff;
         }
 
         .card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
+            color: #aaa;
+            margin-bottom: 1.5rem;
         }
 
-        .card-tag {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.3rem 0.8rem;
-            background: rgba(139, 92, 246, 0.1);
-            color: var(--accent-primary);
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
+        .card-btn {
+            padding: 0.8rem 2rem;
+            background: transparent;
+            border: 1px solid var(--cyber-purple);
+            color: var(--cyber-purple);
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-transform: uppercase;
         }
 
-        /* 社区动态 */
-        .community-feed {
+        .card-btn:hover {
+            background: var(--cyber-purple);
+            color: #000;
+            box-shadow: 0 0 15px var(--cyber-purple);
+        }
+
+        /* 社区交流区 */
+        .community-section {
+            padding: 4rem 5%;
             max-width: 800px;
             margin: 0 auto;
         }
 
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--cyber-blue);
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+
         .post {
             background: var(--bg-card);
-            padding: 2rem;
-            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
             margin-bottom: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.03);
             display: flex;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
         .avatar {
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            background: linear-gradient(135deg, var(--cyber-purple), var(--cyber-blue));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -303,148 +239,265 @@
         }
 
         .post-content h4 {
+            color: var(--cyber-pink);
             margin-bottom: 0.3rem;
         }
 
         .post-meta {
             font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 0.8rem;
+            color: #666;
+            margin-bottom: 0.5rem;
         }
 
-        .post-actions {
-            margin-top: 1rem;
-            display: flex;
-            gap: 1.5rem;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .post-actions span {
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .post-actions span:hover {
-            color: var(--accent-secondary);
+        .post-text {
+            color: #ccc;
         }
 
         /* 页脚 */
         footer {
             text-align: center;
-            padding: 3rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            color: var(--text-muted);
+            padding: 2rem;
+            border-top: 1px solid rgba(139, 92, 246, 0.3);
+            color: #888;
+            margin-top: 2rem;
         }
 
-        /* 移动端适配 */
+        .footer-link {
+            color: var(--cyber-blue);
+            text-decoration: none;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+
+        .footer-link:hover {
+            text-shadow: 0 0 10px var(--cyber-blue);
+        }
+
+        /* 响应式 */
         @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero h1 { font-size: 2.5rem; }
-            .hero-btns { flex-direction: column; width: 100%; padding: 0 1rem; }
-            .cta-btn, .btn-secondary { width: 100%; }
-            .post { flex-direction: column; }
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .logo {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- 粒子背景 -->
+    <canvas id="particle-canvas"></canvas>
+
     <!-- 导航栏 -->
     <nav>
-        <div class="logo">Frontend Hub</div>
-        <ul class="nav-links">
-            <li><a href="#resources">学习路径</a></li>
-            <li><a href="#community">技术交流</a></li>
-            <li><a href="#">实战项目</a></li>
-            <li><a href="#">关于我们</a></li>
-        </ul>
-        <button class="cta-btn">立即加入</button>
+        <div class="logo">Moder Study Website</div>
     </nav>
 
-    <!-- 英雄区 -->
-    <section class="hero">
-        <div class="floating-shapes">
-            <div class="shape shape-1"></div>
-            <div class="shape shape-2"></div>
-        </div>
-        <h1>探索前端的 <span class="gradient-text">无限可能</span></h1>
-        <p>与数万开发者一起，从 HTML 到 React，从菜鸟到大神。在这里，代码不仅是工具，更是艺术。</p>
-        <div class="hero-btns">
-            <button class="cta-btn"><i class="fas fa-rocket"></i> 开始学习</button>
-            <button class="btn-secondary"><i class="fab fa-github"></i> 查看源码</button>
-        </div>
-    </section>
+    <div class="main-content">
+        <!-- 第一区域 -->
+        <section class="hero">
+            <h1>因为学的东西太多，就拿AI搭个学习网站了~</h1>
+            <div class="typewriter" id="typewriter"></div>
+        </section>
 
-    <!-- 学习资源 -->
-    <section id="resources">
-        <div class="section-header">
-            <h2>精选学习路径</h2>
-            <p>由浅入深，系统化掌握现代前端技术栈</p>
-            <a href="./class.html">再来</a>
-        </div>
-        <div class="resources-grid">
-            <div class="card">
-                <div class="card-icon"><i class="fab fa-html5"></i></div>
-                <h3>基础筑基</h3>
-                <p>HTML5 语义化标签、CSS3  Flexbox/Grid 布局、原生 JavaScript 核心。</p>
-                <span class="card-tag">入门级</span>
-            </div>
-            <div class="card">
-                <div class="card-icon"><i class="fab fa-react"></i></div>
-                <h3>框架进阶</h3>
-                <p>深入 React/Vue 生态，掌握状态管理、路由、组件化开发思维。</p>
-                <span class="card-tag">进阶级</span>
-            </div>
-            <div class="card">
-                <div class="card-icon"><i class="fas fa-cube"></i></div>
-                <h3>工程化与性能</h3>
-                <p>Webpack/Vite 构建、TypeScript 类型系统、前端性能优化方案。</p>
-                <span class="card-tag">高级</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- 社区交流 -->
-    <section id="community" style="background: rgba(255,255,255,0.02);">
-        <div class="section-header">
-            <h2>社区热门讨论</h2>
-            <p>分享你的代码，解答他人的疑惑</p>
-        </div>
-        <div class="community-feed">
-            <div class="post">
-                <div class="avatar">张</div>
-                <div class="post-content">
-                    <h4>Vue3 组合式 API 真香现场</h4>
-                    <div class="post-meta">2小时前 · Vue.js</div>
-                    <p>用了 setup 语法糖之后，代码逻辑复用简直不要太爽！以前 mixin 里的变量来源都找不到，现在清晰多了。有没有同感的？</p>
-                    <div class="post-actions">
-                        <span><i class="far fa-heart"></i> 128</span>
-                        <span><i class="far fa-comment"></i> 45</span>
+        <!-- 学习卡片区 -->
+        <section class="cards-section">
+            <div class="cards-grid">
+                <!-- 卡片1：微积分 -->
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-integral"></i>
                     </div>
+                    <h3>微积分专区</h3>
+                    <p>微积分疑难杂症根治</p>
+                    <button class="card-btn" data-url="./weijifen.html">点击进入</button>
+                </div>
+
+                <!-- 卡片2：C语言 -->
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fab fa-cuttlefish"></i>
+                    </div>
+                    <h3>C语言专区</h3>
+                    <p>依旧努力学习C语言</p>
+                    <button class="card-btn" data-url="./C.html">点击进入</button>
+                </div>
+
+                <!-- 卡片3：网安 -->
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    <h3>网安专区</h3>
+                    <p>我不会</p>
+                    <button class="card-btn" data-url="./CTF.html">点击进入</button>
+                </div>
+
+                <!-- 卡片4：前端 -->
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fab fa-html5"></i>
+                    </div>
+                    <h3>前端专区</h3>
+                    <p>我也不会</p>
+                    <button class="card-btn" data-url="./qianduan.html">点击进入</button>
                 </div>
             </div>
+        </section>
+
+        <!-- 社区交流区 -->
+        <section class="community-section">
+            <h2 class="section-title">社区交流区</h2>
+            
             <div class="post">
-                <div class="avatar">李</div>
+                <div class="avatar">M</div>
                 <div class="post-content">
-                    <h4>求助：这个 CSS 动画怎么优化？</h4>
-                    <div class="post-meta">5小时前 · CSS</div>
-                    <p>写了一个视差滚动效果，在手机上有点掉帧。已经加了 transform: translateZ(0) 开启 GPU 加速，还有什么其他黑科技吗？</p>
-                    <div class="post-actions">
-                        <span><i class="far fa-heart"></i> 82</span>
-                        <span><i class="far fa-comment"></i> 67</span>
-                    </div>
+                    <h4>Moder</h4>
+                    <div class="post-meta">10分钟前</div>
+                    <p class="post-text">今天的微积分又学废了，有没有大佬带带我...</p>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- 页脚 -->
-    <footer>
-        <p>&copy; 2024 Frontend Hub. Built with ❤️ and lots of coffee.</p>
-    </footer>
+            <div class="post">
+                <div class="avatar">X</div>
+                <div class="post-content">
+                    <h4>学神小王</h4>
+                    <div class="post-meta">30分钟前</div>
+                    <p class="post-text">推荐大家去看3Blue1Brown的微积分视频，讲得超级好！</p>
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="avatar">L</div>
+                <div class="post-content">
+                    <h4>CTF新手</h4>
+                    <div class="post-meta">2小时前</div>
+                    <p class="post-text">刚入门Web安全，有没有一起刷题的伙伴？</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <footer>
+            <p>@MODER 非常好网页使我的大脑旋转</p>
+            <a href="https://waterlm.xyz" target="_blank" class="footer-link">waterlm.xyz</a>
+        </footer>
+    </div>
 
     <script>
-        // 简单的平滑滚动
+        // --- 1. 粒子背景系统 ---
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 100 };
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = Math.random() * 30 + 1;
+                this.speed = 0.02;
+            }
+
+            draw() {
+                ctx.fillStyle = 'rgba(139, 92, 246, 0.6)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            update() {
+                // 鼠标排斥效果
+                if (mouse.x && mouse.y) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    let forceDirectionX = dx / distance;
+                    let forceDirectionY = dy / distance;
+                    let maxDistance = mouse.radius;
+                    let force = (maxDistance - distance) / maxDistance;
+                    
+                    if (distance < maxDistance) {
+                        this.x -= forceDirectionX * force * this.density;
+                        this.y -= forceDirectionY * force * this.density;
+                    }
+                }
+
+                // 缓慢回到原位
+                if (this.x !== this.baseX) {
+                    let dx = this.x - this.baseX;
+                    this.x -= dx * this.speed;
+                }
+                if (this.y !== this.baseY) {
+                    let dy = this.y - this.baseY;
+                    this.y -= dy * this.speed;
+                }
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let numberOfParticles = (canvas.width * canvas.height) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let particle of particles) {
+                particle.draw();
+                particle.update();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        // --- 2. 打字机特效 ---
+        const text = "希望有用呢";
+        const typewriterEl = document.getElementById('typewriter');
+        let index = 0;
+
+        function type() {
+            if (index < text.length) {
+                typewriterEl.textContent += text.charAt(index);
+                index++;
+                setTimeout(type, 200);
+            }
+        }
+        setTimeout(type, 500);
+
+        // --- 3. 按钮点击跳转事件 ---
+        document.querySelectorAll('.card-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const url = this.getAttribute('data-url');
+                window.location.href = url;
+            });
+        });
+
+        // --- 4. 平滑滚动 ---
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -452,16 +505,6 @@
                     behavior: 'smooth'
                 });
             });
-        });
-
-        // 导航栏滚动效果
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 50) {
-                nav.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.5)';
-            } else {
-                nav.style.boxShadow = 'none';
-            }
         });
     </script>
 </body>
